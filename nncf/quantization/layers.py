@@ -157,7 +157,7 @@ class BaseQuantizer(nn.Module):
         if is_tracing_state():
             return self.run_export_quantization(x)
 
-        return self.quantize(x)
+        return self.quantize(x.cpu())
 
     def quantize(self, x):
         raise NotImplementedError
