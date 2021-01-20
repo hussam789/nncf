@@ -30,7 +30,7 @@ class QuantizeSymmetric(torch.autograd.Function):
             if not input_.is_contiguous():
                 warnings.warn("input_ is not contiguous!", RuntimeWarning)
                 input_ = input_.contiguous()
-            output = QuantizedFunctionsCUDA.Quantize_forward(input_, input_low.cuda(), input_range.cuda(), levels.cuda())
+            output = QuantizedFunctionsCUDA.Quantize_forward(input_, input_low.cuda(), input_range.cuda(), levels)
         else:
             output = QuantizedFunctionsCPU.Quantize_forward(input_, input_low, input_range, levels)
 
@@ -54,7 +54,7 @@ class QuantizeSymmetric(torch.autograd.Function):
                 grad_output = grad_output.contiguous()
 
             grad_input, _, grad_scale = QuantizedFunctionsCUDA.Quantize_backward(
-                grad_output, input_, input_low.cuda(), input_range.cuda(), levels.cuda(), level_low.cuda(), level_high.cuda()
+                grad_output, input_, input_low.cuda(), input_range.cuda(), levels, level_low, level_high
             )
         else:
             grad_input, _, grad_scale = QuantizedFunctionsCPU.Quantize_backward(
@@ -71,7 +71,7 @@ class QuantizeAsymmetric(torch.autograd.Function):
             if not input_.is_contiguous():
                 warnings.warn("input_ is not contiguous!", RuntimeWarning)
                 input_ = input_.contiguous()
-            output = QuantizedFunctionsCUDA.Quantize_forward(input_, input_low.cuda(), input_range.cuda(), levels.cuda())
+            output = QuantizedFunctionsCUDA.Quantize_forward(input_, input_low.cuda(), input_range.cuda(), levels)
         else:
             output = QuantizedFunctionsCPU.Quantize_forward(input_, input_low, input_range, levels)
 
